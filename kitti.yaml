@@ -1,0 +1,6 @@
+train: kitti/images/train
+val: kitti/images/train
+
+# Classes
+nc: 7  # number of classes
+names: ['Truck', 'Cyclist', 'Tram', 'Person_sitting', 'Van', 'Pedestrian', 'Car']

@@ -37,6 +37,9 @@ __all__ = (
     "CBFuse",
     "CBLinear",
     "Silence",
+    # TODO add Module
+    "LSKAttention",
+    "LSKAttentionV2",
 )
 
 
@@ -426,7 +429,7 @@ class MaxSigmoidAttnBlock(nn.Module):
 
         aw = torch.einsum("bmchw,bnmc->bmhwn", embed, guide)
         aw = aw.max(dim=-1)[0]
-        aw = aw / (self.hc**0.5)
+        aw = aw / (self.hc ** 0.5)
         aw = aw + self.bias[None, :, None, None]
         aw = aw.sigmoid() * self.scale
 
@@ -490,7 +493,7 @@ class ImagePoolingAttn(nn.Module):
         """Executes attention mechanism on input tensor x and guide tensor."""
         bs = x[0].shape[0]
         assert len(x) == self.nf
-        num_patches = self.k**2
+        num_patches = self.k ** 2
         x = [pool(proj(x)).view(bs, -1, num_patches) for (x, proj, pool) in zip(x, self.projections, self.im_pools)]
         x = torch.cat(x, dim=-1).transpose(1, 2)
         q = self.query(text)
@@ -503,7 +506,7 @@ class ImagePoolingAttn(nn.Module):
         v = v.reshape(bs, -1, self.nh, self.hc)
 
         aw = torch.einsum("bnmc,bkmc->bmnk", q, k)
-        aw = aw / (self.hc**0.5)
+        aw = aw / (self.hc ** 0.5)
         aw = F.softmax(aw, dim=-1)
 
         x = torch.einsum("bmnk,bkmc->bnmc", aw, v)
@@ -682,3 +685,94 @@ class CBFuse(nn.Module):
         res = [F.interpolate(x[self.idx[i]], size=target_size, mode="nearest") for i, x in enumerate(xs[:-1])]
         out = torch.sum(torch.stack(res + xs[-1:]), dim=0)
         return out
+
+
+class LSKBlock(nn.Module):
+    def __init__(self, c1):
+        super().__init__()
+        self.cv1 = nn.Conv2d(c1, c1, 5, padding=2, groups=c1)
+        self.cv2 = nn.Conv2d(c1, c1, 7, stride=1, padding=9, groups=c1, dilation=3)
+        self.cv3 = nn.Conv2d(c1, c1 // 2, 1)
+        self.cv4 = nn.Conv2d(c1, c1 // 2, 1)
+        self.cv5 = nn.Conv2d(2, 2, 7, padding=3)
+        self.cv6 = nn.Conv2d(c1 // 2, c1, 1)
+
+    def forward(self, x):
+        attn1 = self.cv1(x)
+        attn2 = self.cv2(attn1)
+
+        attn1 = self.cv3(attn1)
+        attn2 = self.cv4(attn2)
+
+        attn = torch.cat([attn1, attn2], dim=1)
+        avg_attn = torch.mean(attn, dim=1, keepdim=True)
+        max_attn, _ = torch.max(attn, dim=1, keepdim=True)
+        agg = torch.cat([avg_attn, max_attn], dim=1)
+        sig = self.cv5(agg).sigmoid()
+        attn = attn1 * sig[:, 0, :, :].unsqueeze(1) + attn2 * sig[:, 1, :, :].unsqueeze(1)
+        attn = self.cv6(attn)
+        return x * attn
+
+
+class LSKBlockV2(nn.Module):
+    def __init__(self, c1):
+        super().__init__()
+        self.cv1 = nn.Conv2d(c1, c1, 5, padding=2, groups=c1)
+        self.cv2 = nn.Conv2d(c1, c1, 7, stride=1, padding=9, groups=c1, dilation=3)
+        self.cv3 = nn.Conv2d(c1, c1 // 2, 1)
+        self.cv4 = nn.Conv2d(c1, c1 // 2, 1)
+        self.cv5 = nn.Conv2d(3, 2, 7, padding=3)
+        self.cv6 = nn.Conv2d(c1 // 2, c1, 1)
+
+    def forward(self, x):
+        attn1 = self.cv1(x)
+        attn2 = self.cv2(attn1)
+
+        attn1 = self.cv3(attn1)
+        attn2 = self.cv4(attn2)
+
+        attn = torch.cat([attn1, attn2], dim=1)
+        avg_attn = torch.mean(attn, dim=1, keepdim=True)
+        max_attn, _ = torch.max(attn, dim=1, keepdim=True)
+        min_attn = torch.min(attn, dim=1, keepdim=True)
+        agg = torch.cat([avg_attn, max_attn, min_attn], dim=1)
+        sig = self.cv5(agg).sigmoid()
+        attn = attn1 * sig[:, 0, :, :].unsqueeze(1) + attn2 * sig[:, 1, :, :].unsqueeze(1)
+        attn = self.cv6(attn)
+        return x * attn
+
+
+class LSKAttention(nn.Module):
+    def __init__(self, c1):
+        super().__init__()
+        self.cv1 = nn.Conv2d(c1, c1, 1)
+        self.cv2 = nn.Conv2d(c1, c1, 1)
+        self.act = nn.GELU()
+        self.LSKBlock = LSKBlock(c1)
+
+    def forward(self, x):
+        shorcut = x.clone()
+        x = self.cv1(x)
+        x = self.act(x)
+        x = self.LSKBlock(x)
+        x = self.cv2(x)
+        x = x + shorcut
+        return x
+
+
+class LSKAttentionV2(nn.Module):
+    def __init__(self, c1):
+        super().__init__()
+        self.cv1 = nn.Conv2d(c1, c1, 1)
+        self.cv2 = nn.Conv2d(c1, c1, 1)
+        self.act = nn.GELU()
+        self.LSKBlock = LSKBlock(c1)
+
+    def forward(self, x):
+        shorcut = x.clone()
+        x = self.cv1(x)
+        x = self.act(x)
+        x = self.LSKBlock(x)
+        x = self.cv2(x)
+        x = x + shorcut
+        return x
