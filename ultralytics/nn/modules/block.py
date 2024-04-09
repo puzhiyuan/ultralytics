@@ -40,6 +40,7 @@ __all__ = (
     # TODO add Module
     "LSKAttention",
     "LSKAttentionV2",
+    "SPPFCSPC",
 )
 
 

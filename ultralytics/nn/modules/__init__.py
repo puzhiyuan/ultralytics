@@ -49,6 +49,7 @@ from .block import (
     # TODO add Module
     LSKAttention,
     LSKAttentionV2,
+    SPPFCSPC,
 )
 from .conv import (
     CBAM,
@@ -77,6 +78,10 @@ from .transformer import (
     TransformerBlock,
     TransformerEncoderLayer,
     TransformerLayer,
+)
+
+from .swTransformer import (
+    SwinTransformer
 )
 
 __all__ = (
@@ -141,4 +146,6 @@ __all__ = (
     # TODO add Module
     "LSKAttention",
     "LSKAttentionV2",
+    "SPPFCSPC",
+    "SwinTransformer",
 )
