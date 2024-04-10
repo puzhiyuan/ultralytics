@@ -50,6 +50,7 @@ from .block import (
     LSKAttention,
     LSKAttentionV2,
     SPPFCSPC,
+    Concat_BiFPN,
 )
 from .conv import (
     CBAM,
@@ -150,5 +151,6 @@ __all__ = (
     "LSKAttentionV2",
     "SPPFCSPC",
     "SwinTransformer",
-    "C3STR"
+    "C3STR",
+    "Concat_BiFPN",
 )
