@@ -139,7 +139,7 @@ dmypy.json
 
 # datasets and projects
 datasets/
-runs/
+# runs/
 wandb/
 tests/
 .DS_Store
@@ -147,7 +147,7 @@ tests/
 # Neural Network weights -----------------------------------------------------------------------------------------------
 weights/
 *.weights
-*.pt
+# *.pt
 *.pb
 *.onnx
 *.engine
