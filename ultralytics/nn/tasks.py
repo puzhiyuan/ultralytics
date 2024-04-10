@@ -54,6 +54,7 @@ from ultralytics.nn.modules import (
     LSKAttentionV2,
     SPPFCSPC,
     SwinTransformer,
+    C3STR,
 )
 from ultralytics.utils import DEFAULT_CFG_DICT, DEFAULT_CFG_KEYS, LOGGER, colorstr, emojis, yaml_load
 from ultralytics.utils.checks import check_requirements, check_suffix, check_yaml
@@ -877,6 +878,7 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             # TODO modify
             SPPFCSPC,
             SwinTransformer,
+            C3STR
         }:
             c1, c2 = ch[f], args[0]
             if c2 != nc:  # if c2 not equal to number of classes (i.e. for Classify() output)
@@ -888,7 +890,7 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
                 )  # num heads
 
             args = [c1, c2, *args[1:]]
-            if m in (BottleneckCSP, C1, C2, C2f, C2fAttn, C3, C3TR, C3Ghost, C3x, RepC3):
+            if m in (BottleneckCSP, C1, C2, C2f, C2fAttn, C3, C3TR, C3Ghost, C3x, RepC3, C3STR):
                 args.insert(2, n)  # number of repeats
                 n = 1
         elif m is AIFI:

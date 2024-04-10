@@ -81,7 +81,9 @@ from .transformer import (
 )
 
 from .swTransformer import (
-    SwinTransformer
+    SwinTransformer,
+    C3STR,
+
 )
 
 __all__ = (
@@ -148,4 +150,5 @@ __all__ = (
     "LSKAttentionV2",
     "SPPFCSPC",
     "SwinTransformer",
+    "C3STR"
 )
