@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 
 from .conv import Conv
+from .block import C3
 import torch.nn.functional as F
 
 class WindowAttention(nn.Module):
@@ -276,3 +277,11 @@ class SwinTransformerBlock(nn.Module):
         x = self.blocks(x)
         return x
 
+        
+# C3 module with SwinTransformerBlock()
+class C3STR(C3):
+    def __init__(self, c1, c2, n=1, shortcut=True, g=1, e=0.5):
+        super().__init__(c1, c2, n, shortcut, g, e)
+        c_ = int(c2 * e)
+        num_heads = c_ // 32
+        self.m = SwinTransformerBlock(c_, c_, num_heads, n)
