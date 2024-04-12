@@ -118,7 +118,7 @@ from .Improve.Attention.cbam import CBAM
 from .Improve.Attention.sk import SKAttention
 from .Improve.Attention.soca import SOCA
 from .Improve.Attention.sa import ShuffleAttention
-
+from .Improve.Attention.seam import SEAM, MultiSEAM
 from .CoreV8.Impove.CARAFE import CARAFE
 
 __all__ = (
@@ -216,5 +216,7 @@ __all__ = (
     'SKAttention',
     'SOCA',
     'ShuffleAttention',
-    'CARAFE'
+    'CARAFE',
+    'SEAM',
+    'MultiSEAM',
 )
