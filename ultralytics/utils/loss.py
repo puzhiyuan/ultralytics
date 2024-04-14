@@ -80,11 +80,11 @@ class BboxLoss(nn.Module):
         # 新的损失函数
         if type(iou) is tuple:
             if len(iou) == 2:
-                loss_iou = ((1.0 - iou[0]) * iou[1].detach() * weight.sum() / target_scores_sum)
+                loss_iou = ((1.0 - iou[0]) * iou[1].detach() * weight).sum() / target_scores_sum
             else:
-                loss_iou = iou[0] * iou[1] * weight.sum() / target_scores_sum
+                loss_iou = (iou[0] * iou[1] * weight).sum() / target_scores_sum
         else:
-            loss_iou = ((1.0 - iou[0]) * weight.sum() / target_scores_sum)
+            loss_iou = ((1.0 - iou) * weight).sum() / target_scores_sum
 
         # DFL loss
         if self.use_dfl:
