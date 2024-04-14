@@ -72,8 +72,19 @@ class BboxLoss(nn.Module):
     def forward(self, pred_dist, pred_bboxes, anchor_points, target_bboxes, target_scores, target_scores_sum, fg_mask):
         """IoU loss."""
         weight = target_scores.sum(-1)[fg_mask].unsqueeze(-1)
-        iou = bbox_iou(pred_bboxes[fg_mask], target_bboxes[fg_mask], xywh=False, CIoU=True)
-        loss_iou = ((1.0 - iou) * weight).sum() / target_scores_sum
+        # TODO change IoU: step2  (attention if "(" is need！！！)
+        # iou = bbox_iou(pred_bboxes[fg_mask], target_bboxes[fg_mask], xywh=False, CIoU=True)
+        iou = bbox_iou(pred_bboxes[fg_mask], target_bboxes[fg_mask], xywh=False, SIoU=True)
+        # 原先的损失函数
+        # loss_iou = ((1.0 - iou) * weight).sum() / target_scores_sum
+        # 新的损失函数
+        if type(iou) is tuple:
+            if len(iou) == 2:
+                loss_iou = ((1.0 - iou[0]) * iou[1].detach() * weight.sum() / target_scores_sum)
+            else:
+                loss_iou = iou[0] * iou[1] * weight.sum() / target_scores_sum
+        else:
+            loss_iou = ((1.0 - iou[0]) * weight.sum() / target_scores_sum)
 
         # DFL loss
         if self.use_dfl:

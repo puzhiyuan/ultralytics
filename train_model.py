@@ -17,16 +17,12 @@ def train(model):
 
 
 def main():
-    # mods_at = ["YOLOv8_CBAM.yaml", "YOLOv8_GAM.yaml", "YOLOv8_SA.yaml", "YOLOv8_SimAM.yaml", "YOLOv8_SK.yaml",]
-    # mods_fpn = ["YOLOv8_ASPP.yaml", "YOLOv8_BasicRFB.yaml", "YOLOv8_SimSPPF.yaml", "YOLOv8_SPPELAN.yaml",
-    #             "YOLOv8_SPPFCSPC.yaml", ]
-    mods_neck = ["YOLOv8_MultiSEAM.yaml", "YOLOv8_SEAM.yaml", "YOLOv8_bigFMap.yaml", ]
+    mods_used = ["YOLOv8_CBAM.yaml", "YOLOv8_GAM.yaml", "YOLOv8_SA.yaml", "YOLOv8_SimAM.yaml", "YOLOv8_SK.yaml",
+                 "YOLOv8_ASPP.yaml", "YOLOv8_BasicRFB.yaml", "YOLOv8_SimSPPF.yaml", "YOLOv8_SPPELAN.yaml",
+                 "YOLOv8_SPPFCSPC.yaml", "YOLOv8_bigFMap.yaml", "YOLOv8_SEAM.yaml", "YOLOv8_MultiSEAM.yaml", ]
+    mods = ["yolov8.yaml", "YOLOv8_bigFMap.yaml", "YOLOv8_BF_ECA.yaml"]
 
-    # for mod in mods_at:
-    #     train(mod)
-    # for mod in mods_fpn:
-    #     train(mod)
-    for mod in mods_neck:
+    for mod in mods:
         train(mod)
 
 
