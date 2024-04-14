@@ -120,6 +120,7 @@ from .Improve.Attention.soca import SOCA
 from .Improve.Attention.sa import ShuffleAttention
 from .Improve.Attention.seam import SEAM, MultiSEAM
 from .CoreV8.Impove.CARAFE import CARAFE
+from .new.ECANet import ECA
 
 __all__ = (
     "Conv",
@@ -219,4 +220,5 @@ __all__ = (
     'CARAFE',
     'SEAM',
     'MultiSEAM',
+    'ECA',
 )
