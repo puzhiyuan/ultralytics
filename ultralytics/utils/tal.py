@@ -124,7 +124,7 @@ class TaskAlignedAssigner(nn.Module):
         """IoU calculation for horizontal bounding boxes."""
         # TODO change IoU step3
         # return bbox_iou(gt_bboxes, pd_bboxes, xywh=False, CIoU=True).squeeze(-1).clamp_(0)
-        return bbox_iou(gt_bboxes, pd_bboxes, xywh=False, SIoU=True).squeeze(-1).clamp_(0)
+        return bbox_iou(gt_bboxes, pd_bboxes, xywh=False, shape_iou=True).squeeze(-1).clamp_(0)
 
     def select_topk_candidates(self, metrics, largest=True, topk_mask=None):
         """
