@@ -11,9 +11,9 @@ from ultralytics import YOLO
 def train(model):
     model = YOLO(model=model, verbose=True)
     # server
-    # model.train(data="kitti.yaml", epochs=150, batch=32, workers=16)
+    model.train(data="kitti.yaml", epochs=150, batch=32, workers=16)
     # pc
-    model.train(data="kitti.yaml", epochs=4, batch=4)
+    # model.train(data="kitti.yaml", epochs=4, batch=4)
 
 
 def main():
