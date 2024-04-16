@@ -20,8 +20,9 @@ def main():
     mods_used = ["YOLOv8_CBAM.yaml", "YOLOv8_GAM.yaml", "YOLOv8_SA.yaml", "YOLOv8_SimAM.yaml", "YOLOv8_SK.yaml",
                  "YOLOv8_ASPP.yaml", "YOLOv8_BasicRFB.yaml", "YOLOv8_SimSPPF.yaml", "YOLOv8_SPPELAN.yaml",
                  "YOLOv8_SPPFCSPC.yaml", "YOLOv8_bigFMap.yaml", "YOLOv8_SEAM.yaml", "YOLOv8_MultiSEAM.yaml", ]
-    mods = ["yolov8.yaml", "YOLOv8_bigFMap.yaml", "YOLOv8_BF_ECA.yaml"]
-
+    # mods = ["yolov8.yaml", "YOLOv8_bigFMap.yaml", "YOLOv8_BF_ECA.yaml"]
+    mods = ["CoT.yaml", "LSK.yaml", "LSKV2.yaml", "YOLOv8_SK.yaml", "YOLOv8_SEAM.yaml", "YOLOv8_MultiSEAM.yaml",
+            ]
     for mod in mods:
         train(mod)
 

@@ -118,7 +118,7 @@ from .Improve.Attention.cbam import CBAM
 from .Improve.Attention.sk import SKAttention
 from .Improve.Attention.soca import SOCA
 from .Improve.Attention.sa import ShuffleAttention
-from .Improve.Attention.seam import SEAM, MultiSEAM
+from ultralytics.nn.modules.new.seam import SEAM, MultiSEAM
 from .CoreV8.Impove.CARAFE import CARAFE
 from .new.ECANet import ECA
 from .new.CoTattention import CoT
