@@ -121,6 +121,7 @@ from .Improve.Attention.sa import ShuffleAttention
 from .Improve.Attention.seam import SEAM, MultiSEAM
 from .CoreV8.Impove.CARAFE import CARAFE
 from .new.ECANet import ECA
+from .new.CoTattention import CoT
 
 __all__ = (
     "Conv",
@@ -221,4 +222,5 @@ __all__ = (
     'SEAM',
     'MultiSEAM',
     'ECA',
+    'CoT',
 )
