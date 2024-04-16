@@ -74,6 +74,7 @@ from ultralytics.nn.modules import (
     SEAM,
     MultiSEAM,
     ECA,
+    CoT,
 )
 
 from ultralytics.utils import DEFAULT_CFG_DICT, DEFAULT_CFG_KEYS, LOGGER, colorstr, emojis, yaml_load
@@ -942,7 +943,7 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
         elif m is CBFuse:
             c2 = ch[f[-1]]
         # TODO modify
-        elif m in [LSKAttention, LSKAttentionV2, ECA]:
+        elif m in [LSKAttention, LSKAttentionV2, ECA, CoT]:
             args = [ch[f]]
         elif m is Concat_BiFPN:
             c2 = sum(ch[x] for x in f)
