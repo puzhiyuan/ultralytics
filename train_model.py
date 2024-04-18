@@ -11,7 +11,7 @@ from ultralytics import YOLO
 def train(model):
     model = YOLO(model=model, verbose=True)
     # server
-    model.train(data="kitti.yaml", epochs=150, batch=32, workers=16)
+    model.train(data="kitti.yaml", epochs=150, batch=32, workers=16, device=(0,1))
     # pc
     # model.train(data="kitti.yaml", epochs=4, batch=4)
 
@@ -21,7 +21,7 @@ def main():
                  "YOLOv8_ASPP.yaml", "YOLOv8_BasicRFB.yaml", "YOLOv8_SimSPPF.yaml", "YOLOv8_SPPELAN.yaml",
                  "YOLOv8_SPPFCSPC.yaml", "YOLOv8_bigFMap.yaml", "YOLOv8_SEAM.yaml", "YOLOv8_MultiSEAM.yaml", ]
     # mods = ["yolov8.yaml", "YOLOv8_bigFMap.yaml", "YOLOv8_BF_ECA.yaml"]
-    mods = ["CoT.yaml", "LSK.yaml", "LSKV2.yaml", "YOLOv8_SK.yaml", "YOLOv8_SEAM.yaml", "YOLOv8_MultiSEAM.yaml",
+    mods = ["yolov8.yaml", "YOLOv8_SK.yaml", "YOLOv8_SEAM.yaml", "YOLOv8_MultiSEAM.yaml",
             ]
     for mod in mods:
         train(mod)
