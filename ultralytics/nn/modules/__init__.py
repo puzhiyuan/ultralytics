@@ -113,15 +113,15 @@ from .CoreV8.SPPF.ASPP import ASPP
 from .CoreV8.SPPF.BasicRFB import BasicRFB
 
 from .Improve.Attention.simam import SimAM
-from .Improve.Attention.gam import GAMAttention
 from .Improve.Attention.cbam import CBAM
 from .Improve.Attention.sk import SKAttention
 from .Improve.Attention.soca import SOCA
-from .Improve.Attention.sa import ShuffleAttention
 from ultralytics.nn.modules.new.seam import SEAM, MultiSEAM
 from .CoreV8.Impove.CARAFE import CARAFE
 from .new.ECANet import ECA
 from .new.CoTattention import CoT
+from .new.GAMNet import GAMAttention
+from .new.SANet import ShuffleAttention
 
 __all__ = (
     "Conv",
