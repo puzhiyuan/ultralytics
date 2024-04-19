@@ -169,7 +169,7 @@ class WIoU_Scale:
 
 # TODO change IoU step1
 def bbox_iou(box1, box2, xywh=True, GIoU=False, DIoU=False, CIoU=False, SIoU=False, EIoU=False, WIoU=False, shape_iou=False,
-             Focal=False, alpha=1, gamma=0.5, scale=False, eps=1e-7, ):
+             Focal=False, alpha=1, gamma=0.5, scale=False, eps=1e-7, MPDIoU=False, feat_h=640, feat_w=640,):
     # Returns the IoU of box1 to box2. box1 is 4, box2 is nx4
 
     # Get the coordinates of bounding boxes
@@ -281,6 +281,13 @@ def bbox_iou(box1, box2, xywh=True, GIoU=False, DIoU=False, CIoU=False, SIoU=Fal
         shape_cost = torch.pow(1 - torch.exp(-1 * omiga_w), 4) + torch.pow(1 - torch.exp(-1 * omiga_h), 4)
 
         return iou - distance - 0.5 * (shape_cost)
+    
+    if MPDIoU:
+        d1 = (b2_x1 - b1_x1) ** 2 + (b2_y1 - b1_y1) ** 2
+        d2 = (b2_x2 - b1_x2) ** 2 + (b2_y2 - b1_y2) ** 2
+        mpdiou_hw_pow = feat_h ** 2 + feat_w ** 2
+        return iou - d1 / mpdiou_hw_pow - d2 / mpdiou_hw_pow  # MPDIoU
+
     else:
         return iou  # IoU
 
