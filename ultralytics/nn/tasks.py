@@ -61,6 +61,7 @@ from ultralytics.nn.modules import (
     SimAM,
     GAMAttention,
     CBAM,
+    Res_CBAM,
     SKAttention,
     SOCA,
     ShuffleAttention,
@@ -948,7 +949,7 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
         elif m is Concat_BiFPN:
             c2 = sum(ch[x] for x in f)
         # Attention注意力机制汇总
-        elif m in (SimAM, GAMAttention, CBAM, SKAttention, SOCA, ShuffleAttention):
+        elif m in (SimAM, GAMAttention, CBAM, SKAttention, SOCA, ShuffleAttention, Res_CBAM):
             c1, c2 = ch[f], args[0]
             if c2 != nc:  # if c2 not equal to number of classes (i.e. for Classify() output)
                 c2 = make_divisible(min(c2, max_channels) * width, 8)

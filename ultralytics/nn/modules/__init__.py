@@ -113,7 +113,6 @@ from .CoreV8.SPPF.ASPP import ASPP
 from .CoreV8.SPPF.BasicRFB import BasicRFB
 
 from .Improve.Attention.simam import SimAM
-from .Improve.Attention.cbam import CBAM
 from .Improve.Attention.sk import SKAttention
 from .Improve.Attention.soca import SOCA
 from ultralytics.nn.modules.new.seam import SEAM, MultiSEAM
@@ -122,6 +121,7 @@ from .new.ECANet import ECA
 from .new.CoTattention import CoT
 from .new.GAMNet import GAMAttention
 from .new.SANet import ShuffleAttention
+from .new.CBAMNet import CBAM, Res_CBAM
 
 __all__ = (
     "Conv",
@@ -223,4 +223,5 @@ __all__ = (
     'MultiSEAM',
     'ECA',
     'CoT',
+    'Res_CBAM',
 )
