@@ -122,6 +122,7 @@ from .new.CoTattention import CoT
 from .new.GAMNet import GAMAttention
 from .new.SANet import ShuffleAttention
 from .new.CBAMNet import CBAM, Res_CBAM
+from .new.backbone.MSBlock import MS
 
 __all__ = (
     "Conv",
@@ -224,4 +225,5 @@ __all__ = (
     'ECA',
     'CoT',
     'Res_CBAM',
+    'MS',
 )
